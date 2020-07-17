@@ -1,0 +1,127 @@
+
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block my_css %}
+
+{% endblock %}
+
+
+
+
+{% block article %}
+
+<article>
+  <aside class="l_box">
+      <div class="about_me">
+        <h2>关于我</h2>
+        <ul>
+          <i><img src="{% static 'images/huba.gif' %}"></i>
+          <p><b>皇</b>---{{ SITE_DESC }}</p>
+        </ul>
+      </div>
+      <div class="wdxc">
+        <h2>我的相册</h2>
+        <ul>
+            {% for recommend_photo in photo_tj %}
+            <li><a href="/"><img src="{{ MEDIA_URL }}{{ recommend_photo.img }}"></a></li>
+            {% endfor %}
+        </ul>
+      </div>
+      <div class="search">
+        <form action="{% url 'article:search' %}" method="get" name="searchform" id="searchform">
+          <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);"
+                 onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}"
+                 onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+          <input name="show" value="title" type="hidden">
+          <input name="tempid" value="1" type="hidden">
+          <input name="tbname" value="news" type="hidden">
+          <input name="Submit" class="input_submit" value="搜索" type="submit">
+            {% csrf_token %}
+        </form>
+      </div>
+
+<div class="fenlei">
+          <h2>文章分类</h2>
+
+        <ul>
+
+            {% for catetory in cate %}
+                <li><a href="{% url 'article:category' catetory.pk %}">{{ catetory.name }}（{{ catetory.num_posts }}）</a></li>
+            {% endfor %}
+
+        </ul>
+      </div>
+
+      <div class="tuijian">
+        <h2>站长推荐</h2>
+        <ul>
+
+            {% for tuijian in recommend_articles %}
+                <li><a href="{{ tuijian.get_absolute_url }}">{{ tuijian.title }}</a></li>
+
+            {% endfor %}
+
+        </ul>
+      </div>
+      <div class="links">
+        <h2>友情链接</h2>
+        <ul>
+            {% for chain in frechain %}
+          <a href="{{ chain.url }}">{{ chain.name }}</a>
+            {% endfor %}
+        </ul>
+      </div>
+      <div class="guanzhu">
+        <h2>关注我 么么哒</h2>
+        <ul>
+          <img src="{% static 'images/mao.gif' %}">
+        </ul>
+      </div>
+  </aside>
+
+
+    <main class="r_box">
+    {% for articles in article.object_list %}
+        <li><i><a href="{{ articles.get_absolute_url }}"><img src="{{ MEDIA_URL }}{{ articles.image }}"></a></i>
+            <h3><a href="{{ articles.get_absolute_url }}">{{ articles.title }}</a></h3>
+            <p>{{ articles.desc }}</p>
+
+        </li>
+
+
+    {% endfor %}
+
+  </main>
+
+    <div class="pageturn"  >
+
+            <ul class="pagelist"  >
+                {% if article.has_previous %}  <!--如果有前页就显示--->
+                      <li class="long" style="float: left"><a href="?{{ article.previous_page_number.querystring }}">上一页</a></li>
+                {% endif %}
+                 {% for page in article.pages %}
+                        {% if page %}
+                                {% ifequal page article.number %}   <!--当前页显示--->
+                                    <li class="active" style="float: left"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                {% else %}
+                                    <li style="float: left"><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                {% endifequal %}
+                        {% else %}
+                                <li class="none" style="float: left"><a href="">...</a></li>
+                        {% endif %}
+                {% endfor %}
+                {% if article.has_next %}
+                            <li class="long" style="float: left"><a href="?{{ article.next_page_number.querystring }}">下一页</a></li>
+
+                {% endif %}
+            </ul>
+
+  </div>
+</article>
+
+{% endblock %}
+
+{% block my_js %}
+
+{% endblock %}

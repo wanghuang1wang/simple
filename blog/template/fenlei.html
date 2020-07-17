@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block article %}
+
+
+    <main class="category-grup r_box" style="width:800px; margin:70px 400px auto;">
+    {% for cate in category %}
+        <li>
+            <i>
+                <a href="{{ cate.get_absolute_url }}"><img src="{{ MEDIA_URL }}{{ cate.image }}"></a>
+            </i>
+            <h3><a href="{{ cate.get_absolute_url }}">{{ cate.title }}</a></h3>
+            <p>{{ cate.desc }}</p>
+{#            {% for tag in articles.tag.all%}#}
+{#            <span class="f_l"><img src="{% static 'images/newsbg01.png' %}" alt="" style="float: left;margin-top: 5px"><a href="/">{{ tag.name}}</a></span>#}
+{#            {% endfor %}#}
+{#            <span class="f_l"><img src="{% static 'images/newsbg02.png' %}" alt="" style="float: left;margin-top: 5px">{{ articles.date_publish }}</span>#}
+{#            <span class="f_r"><img src="{% static 'images/newsbg03.png' %}" alt="" style="float: left;margin-top: 5px">浏览（<a href="/">459</a>）</span>#}
+{#            <span class="f_r"><img src="{% static 'images/newsbg04.png' %}" alt="" style="float: left;margin-top: 5px">评论（<a href="/">30</a>）</span>#}
+
+
+        </li>
+
+
+    {% endfor %}
+
+{#          <div class="pagelist">   做一半没做成 以后在说#}
+{#      <a class="allpage"><b>{{ article.paginator.num_pages }}</b></a>&nbsp;&nbsp;#}
+{#              {% for page_number in article.paginator.page_range %}#}
+{#              {% if page_number == page_number %}#}
+{#                  <a href="#" class="curPage">{{ page_number }}</a>#}
+{##}
+{#              {% else %}#}
+{#                  <a href="#" >{{ page_number }}</a>#}
+{#               {% endif %}#}
+{##}
+{##}
+{#              {% endfor %}#}
+{#              &nbsp;&nbsp;#}
+{#      &nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(3)">3</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(4)">4</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(5)">5</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(6)">6</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(7)">7</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(8)">8</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(9)">9</a>&nbsp;&nbsp;#}
+{#      <a href="#" onclick="page(2)">下一页</a>#}
+{#  </div>#}
+
+
+
+
+
+
+
+  </main>
+
+{#          <div class="pageturn" >#}
+{##}
+{#            <ul class="pagelist" >#}
+{#                {% if article.has_previous %}  <!--如果有前页就显示--->#}
+{#                      <li class="long" style="float: left"><a href="?{{ article.previous_page_number.querystring }}">上一页</a></li>#}
+{#                {% endif %}#}
+{#                 {% for page in article.pages %}#}
+{#                        {% if page %}#}
+{#                                {% ifequal page article.number %}   <!--当前页显示--->#}
+{#                                    <li class="active" style="float: left"><a href="?{{ page.querystring }}">{{ page }}</a></li>#}
+{#                                {% else %}#}
+{#                                    <li style="float: left"><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>#}
+{#                                {% endifequal %}#}
+{#                        {% else %}#}
+{#                                <li class="none" style="float: left"><a href="">...</a></li>#}
+{#                        {% endif %}#}
+{#                {% endfor %}#}
+{#                {% if article.has_next %}#}
+{#                            <li class="long" style="float: left"><a href="?{{ article.next_page_number.querystring }}">下一页</a></li>#}
+{##}
+{#                {% endif %}#}
+{#            </ul>#}
+{##}
+{#  </div>#}
+
+
+
+{% endblock %}
+

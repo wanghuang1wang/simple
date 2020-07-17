@@ -1,0 +1,182 @@
+{% extends 'info-base.html' %}
+
+{% load staticfiles %}
+
+
+{% block info_left %}
+     <aside class="l_box">
+    <div class="search">
+      <form action="{% url 'article:search' %}" method="get" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="fenlei">
+      <h2>文章分类</h2>
+      <ul>
+          {% for cc in info_le_fen %}
+        <li><a href="/">{{ cc.name }}（{{ cc.num_posts }}）</a></li>
+          {% endfor%}
+
+      </ul>
+    </div>
+    <div class="tuijian">
+      <h2>站长推荐</h2>
+      <ul>
+          {% for recommend in info_le_rec %}
+          <li><a href="{{ recommend.get_absolute_url }}">{{ recommend.title }}</a></li>
+          {% endfor %}
+
+      </ul>
+    </div>
+    <div class="tuijian">
+      <h2>点击排行</h2>
+      <ul>
+          {% for click_article in info_le_cli %}
+
+              <li><a href="{{ click_article.get_absolute_url }}">{{ click_article.title }}</a></li>
+
+
+          {% endfor %}
+      </ul>
+    </div>
+    <div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+          {% for a_tag in info_le_tag %}
+          <a href="/">{{ a_tag.name }}</a>
+          {% endfor %}
+      </ul>
+    </div>
+    <div class="guanzhu">
+      <h2> 么么哒</h2>
+      <ul>
+        <img src="{% static 'images/mao.gif' %}">
+      </ul>
+    </div>
+  </aside>
+    {% endblock %}
+
+
+{% block info_main %}
+
+<main>
+    <div class="infosbox">
+      <div class="newsview">
+        <h3 class="news_title">{{ article_info.title }}</h3>
+        <div class="bloginfo">
+          <ul>
+            <li class="author">作者：<a href="/">{{ article_info.user }}</a></li>
+            <li class="lmname"><a href="{% url 'article:category' catetory.pk %}">{{ catetory.name }}</a></li>   <!--文章分类 还没做-->
+            <li class="timer">时间：{{ article_info.date_publish | date:'Y-m-d' }}</li>
+            <li class="view">{{ article_info.click_count }}人已阅读</li>
+          </ul>
+        </div>
+        <div class="tags">
+            {% for tag in article_info.tag.all %}
+               <a href="/" target="_blank">{{ tag.name }}</a>
+            {% endfor %}
+             &nbsp;
+
+        </div>
+        <div class="news_about"><strong>简介</strong>{{ article_info.desc }}</div>
+        <div class="news_con">
+            {{ article_info.content | safe }}
+          &nbsp; </div>
+      </div>
+      <div class="share">
+
+          <p class="diggit" ><a type="button"  id="like_clike"  style="background-color: #E2523A;cursor: pointer;">很赞哦！ </a><!--(<b id="diggnum">{{ article_info.like_click }}  </b>)--></p>
+
+<script type="text/javascript">
+    document.querySelector("#like_clike").onclick = function () {
+        AjaxLike();
+     };
+    function AjaxLike() {
+        const key = {{ article_info.id }}
+        $.ajax({
+            type: "GET",
+            url: '{% url 'article:give_like' %}',
+            data: {"key": key},
+            dataType: "json",
+            success: function (data) {
+                RequessSucess(data);
+            }
+        })
+    };
+    function RequessSucess(Data) {
+        const ReponseData = Data;
+        document.getElementById("like_clike").innerHTML = ReponseData.id;
+
+    };
+</script>
+      </div>
+      <div class="nextinfo">  <!--还需要改进-->
+        <p>上一篇：<a href="{{ next_ar.get_absolute_url  }}">{{ next_ar.title }}</a></p>
+        <p>下一篇：<a href="{{ pro_ar.get_absolute_url }}">{{ pro_ar.title }}</a></p>
+      </div>
+
+      <div class="news_pl">
+      <h2>相关文章</h2>
+      <ul class="xg_ul_level">
+          {% for xgwz in list_about %}
+              <li style="display: inline-table;margin-left: 20px; "><a href="{{ xgwz.get_absolute_url }}" title="相关文章">{{ xgwz.title }}</a></li>
+
+          {% endfor %}
+
+
+      </ul>
+    </div>
+        <!--------文章评论后期做------->
+
+
+<div class="news_pl">
+    <h2>游客评论</h2>
+
+    <div class="gbko">
+
+        <div class="fb">
+            {% for com in comment %}
+            <ul>
+              <p class="fbtime"><span style="padding-right: 10px">{{ com.comment_time }} </span>游客</p>
+              <p class="fbinfo">{{ com.comment_desc }}</p>
+              <input type="button" value="等待回复" style="float: right">
+            </ul>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="comment_ajax">
+{#        <form action="{% url 'comment:comment' %}" method="get">#}
+        <textarea name="text_area" id="text_area" cols="30" rows="5" placeholder="评论区" style="width: 550px;margin-left: 50px"></textarea>
+        <input class="diggit" id="input_sbumit" type="submit" style="float: right;margin-right: 50px;" value="发表评论" >
+{#        </form>#}
+    </div>
+    <script>
+        document.querySelector('#input_sbumit').onclick = function () {
+            AjaxTextArea()
+         }
+        function AjaxTextArea() {
+            var key_text = document.getElementById('text_area').value;
+            var title = {{ article_info.id }}
+            $.ajax({
+                type:"GET",
+                url:{% url 'comment:comment' %},
+                data:{"key":key_text,"title":title},
+                dataType: "json",
+                success: function (data) {
+                    document.querySelector("#input_sbumit").innerHTML=data
+         }
+            })
+        }
+    </script>
+    </div>
+    </div>
+</main>
+{% endblock %}
+
+
+
+

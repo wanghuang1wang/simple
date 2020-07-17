@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{{ SITE_NAME }}</title>
+<meta name="keywords" content="{{ SITE_DESC }}" />
+<meta name="description" content="{{ SITE_DESC }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'css/base.css' %}" rel="stylesheet">
+<link href="{% static 'css/index.css' %}" rel="stylesheet">
+<link href="{% static 'css/info.css' %}" rel="stylesheet">
+<link href="{% static 'css/m.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static '/markdown/css/code.css' %}">  <!--markdown-->
+<link rel="stylesheet" href="{% static 'markdown/css/editormd.preview.css' %}">  <!--markdown-->
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/comm.js' %}"></script>
+<script src="{% static '/markdown/js/prettify.min.js' %}"></script>  <!--markdown-->
+<script src="{% static '/markdown/js/marked.min.js' %}"></script>   <!--markdown-->
+<script src="{% static '/markdown/js/editormd.js' %}"></script>  <!--markdown-->
+
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<body>
+<header class="header-navigation" id="header">
+  <nav>
+    <div class="logo"><a href="/">{{ SITE_NAME }}</a></div>
+    <h2 id="mnavh"><span class="navicon"></span></h2>
+    <ul id="starlist">
+      <li><a href="{% url 'myblog:index' %}">网站首页</a></li>
+      <li><a href="{% url 'article:share' %}">我的相册</a></li>
+      <li><a href="{% url 'article:articlesuibi'%}">我的随笔</a></li>
+      <li><a href="#"><s>留言</s></a></li>
+
+    </ul>
+  </nav>
+</header>
+<article>
+    {% block info_left %}
+
+    {% endblock %}
+
+    {% block info_main %}
+
+    {% endblock %}
+
+</article>
+<footer>
+   <p>Design by <a href="#" target="_blank">个人博客</a> <a href="/">蜀ICP备xxxxxx号-1</a></p>
+</footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>

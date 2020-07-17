@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<title>{{ SITE_NAME }}</title>
+<meta name="keywords" content="{{ SITE_DESC }}" />
+<meta name="description" content="{{ SITE_DESC }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'css/base.css' %}" rel="stylesheet">
+<link href="{% static 'css/index.css' %}" rel="stylesheet">
+<link href="{% static 'css/m.css' %}" rel="stylesheet">
+
+    {% block my_css %}
+    {% endblock %}
+<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/comm.js' %}"></script>
+
+<script src="http://api.asilu.com/cdn/jquery.js,jquery.backstretch.min.js" type="text/javascript"></script>
+{% block my_js %}
+{% endblock %}
+<!--[if lt IE 9]>
+<script src="{% static 'js/modernizr.js'%}"></script>
+<![endif]-->
+</head>
+
+
+<body>
+<!--轮播图-->
+<script type="text/javascript">
+$.backstretch([
+        '{% static 'images/timg (1).gif' %}',
+        {#'http://api.asilu.com/cdn/img/bg/444.jpg',#}
+        {#'http://api.asilu.com/cdn/img/bg/445.jpg',#}
+        {#'http://api.asilu.com/cdn/img/bg/446.jpg',#}
+        {#'http://api.asilu.com/cdn/img/bg/447.jpg',#}
+        {#'http://api.asilu.com/cdn/img/bg/448.jpg',#}
+        {#'https://cn.bing.com/th?id=OHR.LaughingOwl_ZH-CN8548558025_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp',#}
+
+    ], {
+        fade : 1000, // 动画时长
+        duration : 2000 // 切换延时
+});
+</script>
+
+<header class="header-navigation" id="header">
+  <nav>
+      <div class="logo"><a href="/">{{ SITE_NAME }}</a></div>
+     <h2 id="mnavh"><span class="navicon"></span></h2>
+     <ul id="starlist">
+      <li><a href="{% url 'myblog:index' %}">网站首页</a></li>
+      <li><a href="{% url 'article:share' %}">我的相册</a></li>
+      <li><a href="{% url 'article:articlesuibi'%}" >我的随笔</a></li>
+
+      <li><a href="#">留言</a></li>
+
+     </ul>
+
+</nav>
+
+
+{#    <audio src="{% static 'images/我愿意平凡的陪在你身旁 (DjYaha版) - 王七七.mp3' %}"  autoplay="autoplay"> </audio>#}
+
+</header>
+
+
+
+
+{% block article %}
+
+{% endblock %}
+
+{#这是搜索后显示的文章展示部分#}
+{% block right_content %}
+{% endblock %}
+
+<footer>
+  <p>Design by <a href="#" target="_blank">个人博客</a> <a href="/">蜀ICP备xxxxxx号-1</a></p>
+</footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+
+
+</html>
